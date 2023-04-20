@@ -1,4 +1,4 @@
-package io.ExcelManager;
+package io.excelmanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
