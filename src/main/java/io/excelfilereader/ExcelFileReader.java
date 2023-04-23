@@ -1,5 +1,6 @@
-package io.mojolll.project.excelfilereader;
+package io.excelfilereader;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -9,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
+@Slf4j
 public class ExcelFileReader {
     public List<Map<Object, Object>> readExcel(String path, String fileName) {
 
@@ -19,6 +21,7 @@ public class ExcelFileReader {
 
         FileInputStream fis = null;
         File excel = new File(path + fileName);
+
         try {
             fis = new FileInputStream(excel);
             Workbook workbook = null;

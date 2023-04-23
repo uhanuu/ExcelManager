@@ -1,4 +1,4 @@
-package io.mojolll.project.excelfilereader;
+package io.excelfilereader;
 
 
 import java.io.IOException;
