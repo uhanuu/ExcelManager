@@ -17,11 +17,13 @@ public class ExcelFileReaderProperties {
     private String path;
     @NotEmpty
     private String fileName;
+    @NotEmpty
+    private String databaseTableName;
 
-    public ExcelFileReaderProperties(List<String> attribute, String path, String fileName) {
+    public ExcelFileReaderProperties(List<String> attribute, String path, String fileName, String databaseTableName) {
         this.attribute = attribute;
         this.path = path;
         this.fileName = fileName;
+        this.databaseTableName = databaseTableName;
     }
-
 }

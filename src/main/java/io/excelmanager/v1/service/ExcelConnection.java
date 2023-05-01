@@ -53,7 +53,7 @@ public class ExcelConnection {
      public void excute(List<Map<Object, Object>> list) throws IOException {
         Connection  conn  = null;
         PreparedStatement pstmt = null;
-        String query = "INSERT INTO university (type,university_id,name,branch,domain) values (?, ?, ?, ?, ?)";
+        String query = setInitialQuery();
         log.info("총 라인 수={}",list.size());
 
 
@@ -85,5 +85,29 @@ public class ExcelConnection {
             if(pstmt != null) try { pstmt.close(); } catch (SQLException e) { e.printStackTrace();}
             if(conn  != null) try { conn.close();  } catch (SQLException e) { e.printStackTrace();}
         } // DB 연결에 사용한 객체와 Query수행을 위해 사용한 객체를 닫는다.
+    }
+
+    public String setInitialQuery() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("INSERT INTO ");
+
+        List<String> attributes = excelFileReaderProperties.getAttribute();
+        String databaseTableName = excelFileReaderProperties.getDatabaseTableName();
+
+        sb.append(databaseTableName+" (");
+        for (String attribute : attributes){
+            sb.append(attribute+",");
+        }
+        //마지막 , 지우기
+        sb.deleteCharAt(sb.length() -1);
+        sb.append(") values (");
+
+        for (int i = 0; i < attributes.size(); i++){
+            sb.append("?,");
+        }
+        sb.deleteCharAt(sb.length() -1);
+        sb.append(")");
+
+        return String.valueOf(sb);
     }
 }
