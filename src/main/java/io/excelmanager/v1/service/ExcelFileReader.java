@@ -1,6 +1,8 @@
 package io.excelmanager.v1.service;
 
+import io.excelmanager.v1.properties.DataSourceConverter;
 import io.excelmanager.v1.properties.ExcelFileReaderProperties;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -12,20 +14,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
+import static io.excelmanager.v1.properties.DataSourceConverter.*;
+
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ExcelFileReader {
+
+    private final DataSourceConverter dataSourceConverter;
     private final ExcelFileReaderProperties excelFileReaderProperties;
 
-    public ExcelFileReader(ExcelFileReaderProperties excelFileReaderProperties) {
-        this.excelFileReaderProperties = excelFileReaderProperties;
-    }
 
-    public List<Map<Object, Object>> readExcel() {
+    public List<Map<String, Object>> readExcel() {
         String path = excelFileReaderProperties.getPath();
         String fileName = excelFileReaderProperties.getFileName();
 
-        List<Map<Object, Object>> list = new ArrayList<>();
+        List<Map<String, Object>> list = new ArrayList<>();
         if (path == null || fileName == null) {
             return list;
         }
@@ -62,7 +66,7 @@ public class ExcelFileReader {
         return list;
     }
 
-    private static void getSheet(Workbook workbook, int sheets, List<Map<Object, Object>> list) {
+    private static void getSheet(Workbook workbook, int sheets, List<Map<String, Object>> list) {
         for (int i = 0; i < sheets; i++) {
             Sheet sheet = workbook.getSheetAt(i);
             int rows = sheet.getLastRowNum();
@@ -70,7 +74,7 @@ public class ExcelFileReader {
         }
     }
 
-    private static void getRow(Sheet sheet, int rows, List<Map<Object, Object>> list) {
+    private static void getRow(Sheet sheet, int rows, List<Map<String, Object>> list) {
         for (int i = 0; i <= rows; i++) {
             Row row = sheet.getRow(i);
             if (row != null) {
@@ -80,13 +84,22 @@ public class ExcelFileReader {
         }
     }
 
-    private static Map<Object, Object> getCell(Row row, int cells) {
-        //colums -> ExcelFileProperties 을 이용해서 넣어주기
-        String[] columns = { "type", "university_id", "name", "branch", "domain"};
-        Map<Object, Object> map = new HashMap<>();
-        int[] cellFilter = getCellIndex(columns);
+    private static Map<String, Object> getCell(Row row, int cells) {
+
+        int[] cellFilter = getIntArrayValues();
+        Map<String, Object> map = new HashMap<>();
+        String[] tmp = getMapKeyToValue()
+                        .keySet().toArray(new String[getMapKeyToValue().size()]);
+        String[] columns = new String[getMapKeyToValue().size()];
+        Map<String, Object> mapKeyToValue = getMapKeyToValue();
+
+        //순서 맞춰주기
+        for (int i = 0; i < mapKeyToValue.size(); i++){
+            columns[(int) mapKeyToValue.get(tmp[i])] = tmp[i];
+        }
+
         int i = 0;
-        for (int j = 0; j < columns.length; j++) {
+        for (int j = 0; j < cellFilter.length; j++) {
 
             Cell cell = row.getCell(cellFilter[i]);
             i++;
@@ -96,7 +109,6 @@ public class ExcelFileReader {
                     break;
                 }
                 switch (cell.getCellType()) {
-                    //다형성을 이용해서 변경 변경가능성 염두
                     case BLANK:
                         map.put(columns[j], "");
                         break;
@@ -121,21 +133,5 @@ public class ExcelFileReader {
         }
 
         return map;
-    }
-    private static int[] getCellIndex(String[] type){
-        int[] filterIndex = new int[type.length];
-        Map<String, Character> filter = Map.of(
-                //enum 으로 수정해서 변경가능성 염두하기
-                "type",'A',
-                "university_id", 'B',
-                "name", 'C',
-                "branch",'D',
-                "domain", 'R'
-
-        );
-        for (int i = 0; i < type.length; i++){
-            filterIndex[i] = filter.get(type[i]) - 65;
-        }
-        return filterIndex;
     }
 }

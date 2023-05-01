@@ -18,8 +18,8 @@ public class ExcelController {
     private final ExcelConnection excelConnection;
 
     @GetMapping("/test")
-    public List<Map<Object, Object>> test() {
-        List<Map<Object, Object>> excelData = excelFileReader.readExcel();
+    public List<Map<String, Object>> test() {
+        List<Map<String, Object>> excelData = excelFileReader.readExcel();
 
         try {
             excelConnection.excute(excelData);

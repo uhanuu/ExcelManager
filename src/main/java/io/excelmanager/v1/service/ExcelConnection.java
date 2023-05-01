@@ -1,6 +1,7 @@
 package io.excelmanager.v1.service;
 
 
+import io.excelmanager.v1.properties.DataSourceConverter;
 import io.excelmanager.v1.properties.ExcelDataSourceProperties;
 import io.excelmanager.v1.properties.ExcelFileReaderProperties;
 import lombok.RequiredArgsConstructor;
@@ -50,11 +51,13 @@ public class ExcelConnection {
         return conn;
     }
 
-     public void excute(List<Map<Object, Object>> list) throws IOException {
+     public void excute(List<Map<String, Object>> list) throws IOException {
         Connection  conn  = null;
         PreparedStatement pstmt = null;
         String query = setInitialQuery();
+        List<String> attributeKey = excelFileReaderProperties.getAttributeKey();
         log.info("총 라인 수={}",list.size());
+
 
 
         try {
@@ -66,9 +69,14 @@ public class ExcelConnection {
                 //읽어온 각 셀들이 자신이 생성해준 table 제약조건과 일치하지 않을 경우 SqlException이 발생한다.
                 //그러한 조건이 발생하면 continue 를 해주는 부분을 추가해주면 된다.
                 if(list.get(i).isEmpty()) continue;	//행에 값이 없을 경우에 그 행을 제외하고 진행
-                //앞의 쿼리에서 물음표에 들어갈 항목들을 순서대로 기입
+
+//               for (int j = 1; j < attributeKey.size() + 1;){
+//                    //앞의 쿼리에서 물음표에 들어갈 항목들을 순서대로 기입
+//                    pstmt.setString(j, (String) list.get(j).get(attributeKey.get(j)));
+//               }
+
                 pstmt.setString(1, (String)list.get(i).get("type"));
-                pstmt.setInt(2, Integer.parseInt((String) list.get(i).get("university_id")));
+                pstmt.setString(2, (String)list.get(i).get("university_id"));
                 pstmt.setString(3, (String)list.get(i).get("name"));
                 pstmt.setString(4, (String)list.get(i).get("branch"));
                 pstmt.setString(5, (String)list.get(i).get("domain"));
@@ -76,9 +84,7 @@ public class ExcelConnection {
                 //update query 실행
                 pstmt.executeUpdate();
             }
-
-            System.out.println("insert를 완료했습니다.");
-
+            log.info("insert를 완료했습니다.");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -91,7 +97,7 @@ public class ExcelConnection {
         StringBuffer sb = new StringBuffer();
         sb.append("INSERT INTO ");
 
-        List<String> attributes = excelFileReaderProperties.getAttribute();
+        List<String> attributes = excelFileReaderProperties.getAttributeKey();
         String databaseTableName = excelFileReaderProperties.getDatabaseTableName();
 
         sb.append(databaseTableName+" (");
