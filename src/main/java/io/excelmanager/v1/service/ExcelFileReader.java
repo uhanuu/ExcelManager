@@ -1,9 +1,11 @@
-package io.excelfilereader;
+package io.excelmanager.v1.service;
 
+import io.excelmanager.v1.properties.ExcelFileReaderProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,8 +13,17 @@ import java.io.IOException;
 import java.util.*;
 
 @Slf4j
+@Service
 public class ExcelFileReader {
-    public List<Map<Object, Object>> readExcel(String path, String fileName) {
+    private final ExcelFileReaderProperties excelFileReaderProperties;
+
+    public ExcelFileReader(ExcelFileReaderProperties excelFileReaderProperties) {
+        this.excelFileReaderProperties = excelFileReaderProperties;
+    }
+
+    public List<Map<Object, Object>> readExcel() {
+        String path = excelFileReaderProperties.getPath();
+        String fileName = excelFileReaderProperties.getFileName();
 
         List<Map<Object, Object>> list = new ArrayList<>();
         if (path == null || fileName == null) {
@@ -36,6 +47,7 @@ public class ExcelFileReader {
                 getSheet(workbook, sheets, list);
             }
         } catch (IOException e) {
+            //예외처리 해주기
             e.printStackTrace();
         } finally {
             if (fis != null) {
@@ -69,6 +81,7 @@ public class ExcelFileReader {
     }
 
     private static Map<Object, Object> getCell(Row row, int cells) {
+        //colums -> ExcelFileProperties 을 이용해서 넣어주기
         String[] columns = { "type", "university_id", "name", "branch", "domain"};
         Map<Object, Object> map = new HashMap<>();
         int[] cellFilter = getCellIndex(columns);
@@ -83,6 +96,7 @@ public class ExcelFileReader {
                     break;
                 }
                 switch (cell.getCellType()) {
+                    //다형성을 이용해서 변경 변경가능성 염두
                     case BLANK:
                         map.put(columns[j], "");
                         break;
@@ -111,6 +125,7 @@ public class ExcelFileReader {
     private static int[] getCellIndex(String[] type){
         int[] filterIndex = new int[type.length];
         Map<String, Character> filter = Map.of(
+                //enum 으로 수정해서 변경가능성 염두하기
                 "type",'A',
                 "university_id", 'B',
                 "name", 'C',

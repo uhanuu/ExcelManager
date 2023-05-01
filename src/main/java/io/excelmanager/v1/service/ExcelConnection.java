@@ -1,5 +1,11 @@
-package io.excelfilereader;
+package io.excelmanager.v1.service;
 
+
+import io.excelmanager.v1.properties.ExcelDataSourceProperties;
+import io.excelmanager.v1.properties.ExcelFileReaderProperties;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,24 +15,34 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
+@RequiredArgsConstructor
+@Service
 public class ExcelConnection {
+    private final ExcelDataSourceProperties excelDataSourceProperties;
+    private final ExcelFileReaderProperties excelFileReaderProperties;
     private Connection getConnection() {
-        Map<String, Object> datasource = YmlReader.datasourceReader("application.yml");
-        String dbUrl = (String) datasource.get("url");
-        String id = (String) datasource.get("username");
-        String password = (String) datasource.get("password");
-        String driverClassName = (String) datasource.get("driver-class-name");
+
+        String dbUrl = excelDataSourceProperties.getUrl();
+        String username = excelDataSourceProperties.getUsername();
+        String password = excelDataSourceProperties.getPassword();
+        String driverClassName = excelDataSourceProperties.getDriverClassName();
+        log.info("dbUrl={}",dbUrl);
+        log.info("username={}",username);
+        log.info("password={}",password);
+        log.info("driverClassName={}",driverClassName);
+
         Connection conn = null;
 
         try {
             Class.forName(driverClassName);
         } catch (ClassNotFoundException e){
             e.getMessage();
-            System.out.println("연결되지 않았습니다.");
+            log.error("연결되지 않았습니다.");
         }
         try {
-            conn = DriverManager.getConnection(dbUrl,id,password);
-            System.out.println("연결에 성공했습니다.");
+            conn = DriverManager.getConnection(dbUrl,username,password);
+            log.info("연결에 성공했습니다.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,8 +54,8 @@ public class ExcelConnection {
         Connection  conn  = null;
         PreparedStatement pstmt = null;
         String query = "INSERT INTO university (type,university_id,name,branch,domain) values (?, ?, ?, ?, ?)";
+        log.info("총 라인 수={}",list.size());
 
-        System.out.println("총 라인 수 : "+list.size());
 
         try {
             conn = getConnection();	//데이터베이스 연결
