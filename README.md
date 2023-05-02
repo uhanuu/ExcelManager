@@ -40,3 +40,5 @@
 4. 내 코드는 "대학원", "대학원대학" 조건은 제외되도록 코드를 작성했는데 좀더 다른 조건을 걸 수 있도록 유연하게 설계
 5. (4)번 조건으로 인해 데이터가 비어있는 부분이 있다. -> DB에 insert 할 때는 체크했지만 JSON 처리할 때 empty check하기
 6. POST요청으로 -> JSON 내려줄 수 있게 처리해주기
+7. Java bean validation 으로 제약조건 설정해주기 -> NOT NULL 사용안할 때 있을 수 있으니까 필수값 수정하기
+(Javax validation에서 조금 기능 더있는 하이버네이트 validation 사용하기 (duration으로 연결시간 설정할 때)
