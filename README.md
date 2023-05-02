@@ -29,6 +29,10 @@
 <img width="792" alt="image" src="https://user-images.githubusercontent.com/110734817/235604929-e81687fa-6ed9-4d4f-bbd6-a3fb190f5e9c.png">
 + 위에 Excel파일 사진과, application.properties 사진을 참고해서 보면 이해가 될 것이다.
 
+## 주의점
+![image](https://user-images.githubusercontent.com/110734817/235668352-d7001f39-96c2-4746-8005-76f02f1f1f74.png)
+application.properties 안에 database-table-name 정보를 확인 후 해당 테이블이 있으면 DROP TABLE 이후 CREATE TABLE을 하기로 지금은 설정되어 있다.
+
 ## yml에서 한글 데이터가 깨진다면 밑에 사진을 참고하자
 <img src="https://user-images.githubusercontent.com/110734817/235599126-f77664ea-9df0-4dfc-b4fc-09aea5a7aa54.png" width="700" height="500"/>
 우측하단에 Transparent native-to-ascii  conversion 클릭해주자
