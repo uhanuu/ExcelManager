@@ -45,3 +45,4 @@ application.properties 안에 database-table-name 정보를 확인 후 해당 �
 4. POST요청으로 -> JSON 내려줄 수 있게 처리해주기
 5. Java bean validation 으로 제약조건 설정해주기 -> NOT NULL 사용안할 때 있을 수 있으니까 필수값 수정하기
 (Javax validation에서 조금 기능 더있는 하이버네이트 validation 사용하기 (duration으로 연결시간 설정할 때)
+6. spring에 jpa.hibernate.ddl-auto 옵션 처럼 원하는 설정 정보에 따라서 table drop, update 요구사항 처리하기
