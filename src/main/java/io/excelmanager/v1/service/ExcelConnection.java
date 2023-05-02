@@ -55,7 +55,9 @@ public class ExcelConnection {
         Connection  conn  = null;
         PreparedStatement pstmt = null;
         String query = setInitialQuery();
-        List<String> attributeKey = excelFileReaderProperties.getAttributeKey();
+        Map<String, Object> mapKeyToValue = DataSourceConverter.getMapKeyToValue();
+         List<String> attributeType = excelFileReaderProperties.getAttributeType();
+         List<String> key = excelFileReaderProperties.getAttributeKey();
         log.info("총 라인 수={}",list.size());
 
 
@@ -70,16 +72,18 @@ public class ExcelConnection {
                 //그러한 조건이 발생하면 continue 를 해주는 부분을 추가해주면 된다.
                 if(list.get(i).isEmpty()) continue;	//행에 값이 없을 경우에 그 행을 제외하고 진행
 
-//               for (int j = 1; j < attributeKey.size() + 1;){
-//                    //앞의 쿼리에서 물음표에 들어갈 항목들을 순서대로 기입
-//                    pstmt.setString(j, (String) list.get(j).get(attributeKey.get(j)));
-//               }
+                for (int j = 0; j < mapKeyToValue.size(); j++){
 
-                pstmt.setString(1, (String)list.get(i).get("type"));
-                pstmt.setString(2, (String)list.get(i).get("university_id"));
-                pstmt.setString(3, (String)list.get(i).get("name"));
-                pstmt.setString(4, (String)list.get(i).get("branch"));
-                pstmt.setString(5, (String)list.get(i).get("domain"));
+                    String excelValue = (String) list.get(i).get(key.get(j));
+                    switch (attributeType.get(j).toLowerCase()) {
+                        case "string": pstmt.setString(j+1,excelValue);
+                        break;
+                        case "int" : pstmt.setInt(j+1,Integer.parseInt(excelValue));
+                        break;
+                        case "long": pstmt.setLong(j+1, Long.parseLong(excelValue));
+                        break;
+                    }
+                }
 
                 //update query 실행
                 pstmt.executeUpdate();

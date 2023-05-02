@@ -17,8 +17,8 @@ public class ExcelController {
     private final ExcelFileReader excelFileReader;
     private final ExcelConnection excelConnection;
 
-    @GetMapping("/test")
-    public List<Map<String, Object>> test() {
+    @GetMapping("/insert-db")
+    public List<Map<String, Object>> insertDatabase() {
         List<Map<String, Object>> excelData = excelFileReader.readExcel();
 
         try {
