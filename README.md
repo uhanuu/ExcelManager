@@ -31,18 +31,17 @@
 
 ## 주의점
 ![image](https://user-images.githubusercontent.com/110734817/235668352-d7001f39-96c2-4746-8005-76f02f1f1f74.png)
+
 application.properties 안에 database-table-name 정보를 확인 후 해당 테이블이 있으면 DROP TABLE 이후 CREATE TABLE을 하기로 지금은 설정되어 있다.
 
 ## yml에서 한글 데이터가 깨진다면 밑에 사진을 참고하자
 <img src="https://user-images.githubusercontent.com/110734817/235599126-f77664ea-9df0-4dfc-b4fc-09aea5a7aa54.png" width="700" height="500"/>
 우측하단에 Transparent native-to-ascii  conversion 클릭해주자
 
-## 개선 사항
-1. Table이 만들어진 상태이며 컬럼명 순서대로 작성하는 부분
-2. attributeValue을 통해서 datatype을 확인해서 DB넣어주어야 된다. -> 아직 모든값 String으로 처리
-3. 예외처리
-4. 내 코드는 "대학원", "대학원대학" 조건은 제외되도록 코드를 작성했는데 좀더 다른 조건을 걸 수 있도록 유연하게 설계
-5. (4)번 조건으로 인해 데이터가 비어있는 부분이 있다. -> DB에 insert 할 때는 체크했지만 JSON 처리할 때 empty check하기
-6. POST요청으로 -> JSON 내려줄 수 있게 처리해주기
-7. Java bean validation 으로 제약조건 설정해주기 -> NOT NULL 사용안할 때 있을 수 있으니까 필수값 수정하기
+## 개선 요구사항
+1. 예외처리
+2. 내 코드는 "대학원", "대학원대학" 조건은 제외되도록 코드를 작성했는데 좀더 다른 조건을 걸 수 있도록 유연하게 설계
+3. (4)번 조건으로 인해 데이터가 비어있는 부분이 있다. -> DB에 insert 할 때는 체크했지만 JSON 처리할 때 empty check하기
+4. POST요청으로 -> JSON 내려줄 수 있게 처리해주기
+5. Java bean validation 으로 제약조건 설정해주기 -> NOT NULL 사용안할 때 있을 수 있으니까 필수값 수정하기
 (Javax validation에서 조금 기능 더있는 하이버네이트 validation 사용하기 (duration으로 연결시간 설정할 때)
