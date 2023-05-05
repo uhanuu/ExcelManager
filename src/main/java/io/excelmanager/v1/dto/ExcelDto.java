@@ -1,5 +1,6 @@
 package io.excelmanager.v1.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -10,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExcelDto {
 
-    @NotEmpty(message = "table에 저장할 column 이름을 순서대로 입력해주세요.")
+    @NotBlank(message = "table에 저장할 column 이름을 순서대로 입력해주세요. 공백일 수 없습니다.")
     private String attributeKey;
 
-    @Pattern(regexp = "^[A-Z]+(,[A-Z]+)*$", message = "대문자 A~Z까지만 작성 가능하며 ,을 기준으로 공백없이 작성해주세요")
+    @Pattern(regexp = "^[A-Z](,[A-Z])*$", message = "대문자 A~Z까지만 작성 가능하며 ,을 기준으로 공백없이 작성해주세요")
     @NotEmpty(message = " Excel File에서 저장할 column을 입력해주세요.")
     private String attributeValue;
 
