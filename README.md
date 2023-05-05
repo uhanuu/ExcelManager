@@ -45,7 +45,8 @@ application.properties 안에 database-table-name 정보를 확인 후 해당 �
 3. (2)번 조건으로 인해 데이터가 비어있는 부분이 있다. -> DB에 insert 할 때는 체크했지만 JSON 처리할 때 empty check하기
 4-1. POST요청으로 -> JSON 내려줄 수 있게 처리해주기
 4-2. db에 내마음대로 파싱한 데이터를 다운로드 받을 수 있게 처리해주기(url 경로 설정할 때 mac,window 운영체제마다 다르니 생각해보기) 
-+ 파일이름으로 다운로드 내려줄 때 추가적으로 UTF-8 적용해주기
+4-3. 파일이름으로 다운로드 내려줄 때 추가적으로 UTF-8 적용해주기
+4-4. 파일이름이 사용자마다 겹칠 수 있으니까 UUID이용해서 파싱해주자 user_id 값을 이용해서 파싱하기에는 domain에 pathValiable 이용하면 노출될 수 있으니까 좋은거 같지는 않다. 물론... 로그인 기능을 만들지는 아직 모르겠지만 >_-
 5. Java bean validation 으로 제약조건 설정해주기 -> NOT NULL 사용안할 때 있을 수 있으니까 필수값 수정하기
 (Javax validation에서 조금 기능 더있는 하이버네이트 validation 사용하기 (duration으로 연결시간 설정할 때)
 6. spring에 jpa.hibernate.ddl-auto 옵션 처럼 원하는 설정 정보에 따라서 table drop, update 요구사항 처리하기
