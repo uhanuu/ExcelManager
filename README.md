@@ -49,3 +49,5 @@ application.properties 안에 database-table-name 정보를 확인 후 해당 �
 5. Java bean validation 으로 제약조건 설정해주기 -> NOT NULL 사용안할 때 있을 수 있으니까 필수값 수정하기
 (Javax validation에서 조금 기능 더있는 하이버네이트 validation 사용하기 (duration으로 연결시간 설정할 때)
 6. spring에 jpa.hibernate.ddl-auto 옵션 처럼 원하는 설정 정보에 따라서 table drop, update 요구사항 처리하기
+7. Local 환경에서 사용하니까 배치프레임워크를 이용해서 특정 시간에(쿼츠 스케줄러 같은거 사용해서) 삭제 처리해주기
+8. 처음에 만들었던 기본로직들 properties에 적용안되어 있어도 다른 기능을 사용할 수 있으니까 default를 줘서 on, off 처리를 하던지 코드 수정하기
