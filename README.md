@@ -1,5 +1,3 @@
-# 엑셀 데이터 추출하기
-
 공공데이터포털에서 사용하면 유용할 Excel파일들이 있어, 데이터를 추출해서 JSON으로 넘겨주거나 DB에 저장하면 유용할거 같아서 개발하기 시작했다. 
 
 <img width="1438" alt="image" src="https://user-images.githubusercontent.com/110734817/235599797-6cfd6dfc-68b5-46f6-99e2-b87dc7c7967f.png">
@@ -52,3 +50,4 @@ application.properties 안에 database-table-name 정보를 확인 후 해당 �
 6. spring에 jpa.hibernate.ddl-auto 옵션 처럼 원하는 설정 정보에 따라서 table drop, update 요구사항 처리하기
 7. Local 환경에서 사용하니까 배치프레임워크를 이용해서 특정 시간에(쿼츠 스케줄러 같은거 사용해서) 삭제 처리해주기
 8. 처음에 만들었던 기본로직들 properties에 적용안되어 있어도 다른 기능을 사용할 수 있으니까 default를 줘서 on, off 처리를 하던지 코드 수정하기
+
