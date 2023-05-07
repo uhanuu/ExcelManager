@@ -1,4 +1,4 @@
-package io.excelmanager.v1.service;
+package io.excelmanager.v1.excel;
 
 import io.excelmanager.v1.properties.DataSourceConverter;
 import io.excelmanager.v1.properties.ExcelFileReaderProperties;

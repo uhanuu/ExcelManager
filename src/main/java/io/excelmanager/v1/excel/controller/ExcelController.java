@@ -1,9 +1,8 @@
-package io.excelmanager.v1.controller;
+package io.excelmanager.v1.excel.controller;
 
 import io.excelmanager.v1.dto.InsertDatabaseDto;
-import io.excelmanager.v1.service.ExcelConnection;
-import io.excelmanager.v1.service.ExcelDataService;
-import io.excelmanager.v1.service.ExcelFileReader;
+import io.excelmanager.v1.excel.ExcelConnection;
+import io.excelmanager.v1.excel.ExcelFileReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class ExcelController {
 
     private final ExcelFileReader excelFileReader;
     private final ExcelConnection excelConnection;
-    private final ExcelDataService excelDataService;
+//    private final ExcelDataService excelDataService;
 
     @GetMapping("/insert-db")
     public List<Map<String, Object>> ExcelDataReader() {
@@ -47,7 +46,8 @@ public class ExcelController {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             return ResponseEntity.badRequest().body(allErrors);
         }
-        excelDataService.insertExcelData(insertDatabaseDto);
+
+//        excelDataService.insertExcelData(insertDatabaseDto); 아직 구현안함
 
 
         return ResponseEntity.ok().body(insertDatabaseDto);
