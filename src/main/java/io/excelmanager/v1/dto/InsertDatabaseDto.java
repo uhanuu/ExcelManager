@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ExcelDto {
+public class InsertDatabaseDto {
 
     @NotBlank(message = "table에 저장할 column 이름을 순서대로 입력해주세요. 공백일 수 없습니다.")
+    @NotBlank
     private String attributeKey;
 
     @Pattern(regexp = "^[A-Z](,[A-Z])*$", message = "대문자 A~Z까지만 작성 가능하며 ,을 기준으로 공백없이 작성해주세요")
@@ -26,7 +27,7 @@ public class ExcelDto {
     @NotEmpty(message = "table 이름을 입력해주세요.")
     private String databaseTableName;
 
-    public ExcelDto(String attributeKey, String attributeValue, String attributeType, String databaseTableName) {
+    public InsertDatabaseDto(String attributeKey, String attributeValue, String attributeType, String databaseTableName) {
         this.attributeKey = attributeKey;
         this.attributeValue = attributeValue;
         this.attributeType = attributeType;

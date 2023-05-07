@@ -1,17 +1,16 @@
 package io.excelmanager.v1.controller;
 
-import io.excelmanager.v1.dto.ExcelDto;
+import io.excelmanager.v1.dto.InsertDatabaseDto;
 import io.excelmanager.v1.service.ExcelConnection;
 import io.excelmanager.v1.service.ExcelDataService;
 import io.excelmanager.v1.service.ExcelFileReader;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,13 +18,15 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/admin")
 public class ExcelController {
 
     private final ExcelFileReader excelFileReader;
     private final ExcelConnection excelConnection;
     private final ExcelDataService excelDataService;
 
-    @GetMapping("/admin/insert-db")
+    @GetMapping("/insert-db")
     public List<Map<String, Object>> ExcelDataReader() {
         List<Map<String, Object>> excelData = excelFileReader.readExcel();
 
@@ -37,14 +38,18 @@ public class ExcelController {
         return excelData;
     }
 
-    @PostMapping("/admin/insert-db")
-    public ResponseEntity insertDatabase(@Validated @RequestBody ExcelDto excelDto, Errors errors){
-        if (errors.hasErrors()){
-            return ResponseEntity.badRequest().body(errors.getFieldError());
+    @PostMapping("/insert-db")
+    public ResponseEntity insertDatabase(@Validated @RequestBody InsertDatabaseDto insertDatabaseDto, BindingResult bindingResult){
+
+        log.info("API 호출");
+        if (bindingResult.hasErrors()){
+            log.info("검증 오류 발생 errors={}",bindingResult);
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            return ResponseEntity.badRequest().body(allErrors);
         }
-        excelDataService.insertExcelData(excelDto);
+        excelDataService.insertExcelData(insertDatabaseDto);
 
 
-        return ResponseEntity.ok().body(excelDto);
+        return ResponseEntity.ok().body(insertDatabaseDto);
     }
 }
