@@ -1,6 +1,7 @@
 package io.excelmanager.v1.excel.controller;
 
 import io.excelmanager.v1.exception.ExcelFileException;
+import io.excelmanager.v1.exception.ModeNotFountException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -8,13 +9,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.sql.SQLException;
+
 @Slf4j
 @RestController
 public class ApiExceptionController {
 
     @GetMapping("/exception/{id}")
-    public MemberDto getMember(@PathVariable("id") String id) {
+    public MemberDto getMember(@PathVariable("id") String id) throws IOException,
+                                                        ClassNotFoundException, SQLException{
 
+        if (id.equals("connection")){
+            throw new ClassNotFoundException();
+        }
+        if (id.equals("sql")){
+            throw new SQLException();
+        }
+        if (id.equals("meta data")) {
+            throw new MalformedURLException();
+        }
         if (id.equals("ex")) {
             throw new RuntimeException("잘못된 사용자");
         }
@@ -24,6 +39,10 @@ public class ApiExceptionController {
         if (id.equals("user-ex")) {
             throw new ExcelFileException("사용자 오류");
         }
+        if (id.equals("mode-ex")) {
+            throw new ModeNotFountException("mode 오류");
+        }
+
 
         return new MemberDto(id, "hello " + id);
     }
