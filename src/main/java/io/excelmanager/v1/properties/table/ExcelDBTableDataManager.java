@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
-public class TableManager {
+public class ExcelDBTableDataManager {
     private static String[] MODE_CONSTANT = {
             "CREATE", "UPDATE", "DEFAULT"
     };
-    private HashMap<String, TableOperation> selectOperationTable = new HashMap<>();
+    private static HashMap<String, ExcelToTableOperation> selectOperationTable = new HashMap<>();
     {
-        selectOperationTable.put(MODE_CONSTANT[0], new TableCreator());
-        selectOperationTable.put(MODE_CONSTANT[1], new TableUpdater());
+        selectOperationTable.put(MODE_CONSTANT[0], new ExcelToTableCreator());
+        selectOperationTable.put(MODE_CONSTANT[1], new ExcelToTableUpdater());
     }
-    private TableOperation tableOperation;
+    private ExcelToTableOperation ExcelToTableOperation;
     @Value("${excel.mode:default}")
     private String mode;
     private String url;
@@ -33,27 +33,27 @@ public class TableManager {
     private List<String> attributeKey;
     private List<String> attributeType;
 
-    public TableManager(TableOperation tableOperation, String url, String username, String password, String tableName, List<String> attributeKey, List<String> attributeType) {
-        this.tableOperation = selectOperationTable.get(this.mode);
+    public ExcelDBTableDataManager(String url, String username, String password, String tableName, List<String> attributeKey, List<String> attributeType) {
         this.url = url;
         this.username = username;
         this.password = password;
         this.tableName = tableName;
         this.attributeKey = attributeKey;
         this.attributeType = attributeType;
-        log.info("TableOperation init ={}",tableOperation);
+        log.info("TableOperation init ={}", ExcelToTableOperation);
     }
 
     @PostConstruct
     public void executeTableOperation(){
-        if (!modeCheck(this.mode)){
+        String checkValue = mode.toUpperCase();
+        if (!modeCheck(checkValue)){
             throw new ModeNotFountException();
         }
-
+        ExcelToTableOperation = selectOperationTable.get(checkValue);
         try{
             Connection connection = DriverManager.getConnection(url, username, password);
             Statement statement = connection.createStatement();
-            tableOperation.execute(statement,tableName,attributeKey,attributeType);
+            ExcelToTableOperation.execute(statement,tableName,attributeKey,attributeType);
 
         } catch (SQLException e){
             e.printStackTrace();
@@ -63,8 +63,8 @@ public class TableManager {
 
     }
 
-    private static boolean modeCheck(String mode){
-        String checkValue = mode.toUpperCase();
+    private static boolean modeCheck(String checkValue){
+
         for (String constant  : MODE_CONSTANT) {
             if (constant.equals(checkValue)) return true;
         }

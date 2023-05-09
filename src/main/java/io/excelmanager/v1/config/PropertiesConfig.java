@@ -3,7 +3,7 @@ package io.excelmanager.v1.config;
 import io.excelmanager.v1.properties.ExcelDataSourceProperties;
 import io.excelmanager.v1.properties.ExcelFileReaderProperties;
 import io.excelmanager.v1.properties.DataSourceConverter;
-import io.excelmanager.v1.properties.ExcelTableCreator;
+import io.excelmanager.v1.properties.table.ExcelDBTableDataManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -26,8 +26,8 @@ public class PropertiesConfig {
     }
 
     @Bean
-    public ExcelTableCreator excelTableCreator(){
-        return new ExcelTableCreator(
+    public ExcelDBTableDataManager ExcelDBTableDataManager(){
+        return new ExcelDBTableDataManager(
                 excelDataSourceProperties.getUrl(),
                 excelDataSourceProperties.getUsername(),
                 excelDataSourceProperties.getPassword(),
