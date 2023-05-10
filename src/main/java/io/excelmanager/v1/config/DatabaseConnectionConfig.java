@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties({ExcelFileReaderProperties.class, ExcelDataSourceProperties.class})
-public class PropertiesConfig {
+public class DatabaseConnectionConfig {
 
     private final ExcelFileReaderProperties excelFileReaderProperties;
     private final ExcelDataSourceProperties excelDataSourceProperties;

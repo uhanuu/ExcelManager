@@ -61,7 +61,6 @@ public class ExcelConnection {
         log.info("총 라인 수={}",list.size());
 
 
-
         try {
             conn = getConnection();	//데이터베이스 연결
             pstmt = conn.prepareStatement(query);	//쿼리 설정
@@ -72,18 +71,7 @@ public class ExcelConnection {
                 //그러한 조건이 발생하면 continue 를 해주는 부분을 추가해주면 된다.
                 if(list.get(i).isEmpty()) continue;	//행에 값이 없을 경우에 그 행을 제외하고 진행
 
-                for (int j = 0; j < mapKeyToValue.size(); j++){
-
-                    String excelValue = (String) list.get(i).get(key.get(j));
-                    switch (attributeType.get(j).toLowerCase()) {
-                        case "string": pstmt.setString(j+1,excelValue);
-                        break;
-                        case "int" : pstmt.setInt(j+1,Integer.parseInt(excelValue));
-                        break;
-                        case "long": pstmt.setLong(j+1, Long.parseLong(excelValue));
-                        break;
-                    }
-                }
+                checkExtracte(list, pstmt, mapKeyToValue, attributeType, key, i);
 
                 //update query 실행
                 pstmt.executeUpdate();
@@ -97,7 +85,22 @@ public class ExcelConnection {
         } // DB 연결에 사용한 객체와 Query수행을 위해 사용한 객체를 닫는다.
     }
 
-    public String setInitialQuery() {
+    private static void checkExtracte(List<Map<String, Object>> list, PreparedStatement pstmt, Map<String, Object> mapKeyToValue, List<String> attributeType, List<String> key, int i) throws SQLException {
+        for (int j = 0; j < mapKeyToValue.size(); j++){
+
+            String excelValue = (String) list.get(i).get(key.get(j));
+            switch (attributeType.get(j).toLowerCase()) {
+                case "string": pstmt.setString(j+1,excelValue);
+                break;
+                case "int" : pstmt.setInt(j+1,Integer.parseInt(excelValue));
+                break;
+                case "long": pstmt.setLong(j+1, Long.parseLong(excelValue));
+                break;
+            }
+        }
+    }
+
+    private String setInitialQuery() {
         StringBuffer sb = new StringBuffer();
         sb.append("INSERT INTO ");
 

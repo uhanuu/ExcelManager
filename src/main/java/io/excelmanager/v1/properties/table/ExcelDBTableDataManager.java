@@ -4,6 +4,7 @@ import io.excelmanager.v1.exception.ModeNotFountException;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -96,7 +97,7 @@ public class ExcelDBTableDataManager {
         }
     }
 
-    private Connection getConnection() {
+    public Connection getConnection() {
         try{
             Connection connection = DriverManager.getConnection(url, username, password);
             log.info("get connection={}, class={}",connection,connection.getClass());
