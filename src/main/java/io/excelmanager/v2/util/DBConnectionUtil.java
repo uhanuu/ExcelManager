@@ -1,4 +1,4 @@
-package io.excelmanager.v1.util;
+package io.excelmanager.v2.util;
 
 public class DBConnectionUtil {
 }

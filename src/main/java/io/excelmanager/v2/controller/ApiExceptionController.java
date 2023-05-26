@@ -1,7 +1,7 @@
-package io.excelmanager.v1.excel.controller;
+package io.excelmanager.v2.controller;
 
-import io.excelmanager.v1.exception.ExcelFileException;
-import io.excelmanager.v1.exception.ModeNotFountException;
+import io.excelmanager.v2.exception.ExcelFileException;
+import io.excelmanager.v2.exception.ModeNotFountException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

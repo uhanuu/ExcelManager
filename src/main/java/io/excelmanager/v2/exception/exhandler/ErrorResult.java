@@ -1,4 +1,4 @@
-package io.excelmanager.v1.exception.exhandler;
+package io.excelmanager.v2.exception.exhandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

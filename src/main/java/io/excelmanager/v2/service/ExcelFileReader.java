@@ -1,4 +1,4 @@
-package io.excelmanager.v1.excel;
+package io.excelmanager.v2.service;
 
 import io.excelmanager.v1.properties.DataSourceConverter;
 import io.excelmanager.v1.properties.ExcelFileReaderProperties;
@@ -12,9 +12,13 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static io.excelmanager.v1.properties.DataSourceConverter.*;
+import static io.excelmanager.v1.properties.DataSourceConverter.getIntArrayValues;
+import static io.excelmanager.v1.properties.DataSourceConverter.getMapKeyToValue;
 
 @Slf4j
 @Service

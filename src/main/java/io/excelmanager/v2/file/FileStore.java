@@ -1,6 +1,6 @@
-package io.excelmanager.v1.file;
+package io.excelmanager.v2.file;
 
-import io.excelmanager.v1.repository.UploadFileRepository;
+import io.excelmanager.v2.repository.UploadFileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,8 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 

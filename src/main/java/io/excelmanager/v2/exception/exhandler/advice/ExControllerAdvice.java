@@ -1,8 +1,8 @@
-package io.excelmanager.v1.exception.exhandler.advice;
+package io.excelmanager.v2.exception.exhandler.advice;
 
-import io.excelmanager.v1.exception.ExcelFileException;
-import io.excelmanager.v1.exception.ModeNotFountException;
-import io.excelmanager.v1.exception.exhandler.ErrorResult;
+import io.excelmanager.v2.exception.ExcelFileException;
+import io.excelmanager.v2.exception.ModeNotFountException;
+import io.excelmanager.v2.exception.exhandler.ErrorResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

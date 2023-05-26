@@ -1,5 +1,6 @@
 package io.excelmanager.v1.dto;
 
+import io.excelmanager.v2.dto.InsertDatabaseDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

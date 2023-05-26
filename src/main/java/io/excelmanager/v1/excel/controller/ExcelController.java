@@ -1,8 +1,8 @@
 package io.excelmanager.v1.excel.controller;
 
-import io.excelmanager.v1.dto.InsertDatabaseDto;
-import io.excelmanager.v1.excel.ExcelConnection;
-import io.excelmanager.v1.excel.ExcelFileReader;
+import io.excelmanager.v2.dto.InsertDatabaseDto;
+import io.excelmanager.v1.excel.service.ExcelConnection;
+import io.excelmanager.v1.excel.service.ExcelFileReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

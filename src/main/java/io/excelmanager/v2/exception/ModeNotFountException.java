@@ -1,4 +1,4 @@
-package io.excelmanager.v1.exception;
+package io.excelmanager.v2.exception;
 
 public class ModeNotFountException extends RuntimeException{
     public ModeNotFountException() {
