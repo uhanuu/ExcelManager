@@ -9,6 +9,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties({ExcelFileReaderProperties.class, ExcelDataSourceProperties.class})
@@ -16,6 +18,7 @@ public class DatabaseConnectionConfig {
 
     private final ExcelFileReaderProperties excelFileReaderProperties;
     private final ExcelDataSourceProperties excelDataSourceProperties;
+    private final DataSource dataSource;
 
     @Bean
     public DataSourceConverter DataSourceConverter(){
@@ -28,6 +31,7 @@ public class DatabaseConnectionConfig {
     @Bean
     public ExcelDBTableDataManager ExcelDBTableDataManager(){
         return new ExcelDBTableDataManager(
+                dataSource,
                 excelDataSourceProperties.getUrl(),
                 excelDataSourceProperties.getUsername(),
                 excelDataSourceProperties.getPassword(),

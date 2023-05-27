@@ -4,24 +4,21 @@ import io.excelmanager.v2.exception.ModeNotFountException;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.*;
-import java.util.HashMap;
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
 public class ExcelDBTableDataManager {
+    private final JdbcTemplate template;
+
     private static String[] MODE_CONSTANT = {
             "CREATE", "UPDATE", "DEFAULT"
     };
-    private static HashMap<String, ExcelToTableOperation> selectOperationTable = new HashMap<>();
-    {
-        selectOperationTable.put(MODE_CONSTANT[0], new ExcelToTableCreator());
-        selectOperationTable.put(MODE_CONSTANT[1], new ExcelToTableUpdater());
-        selectOperationTable.put(MODE_CONSTANT[2], new ExcelToTableDefault());
-    }
-    private ExcelToTableOperation ExcelToTableOperation;
+
     @Value("${excel.mode:default}")
     private String mode;
     private String url;
@@ -31,7 +28,8 @@ public class ExcelDBTableDataManager {
     private List<String> attributeKey;
     private List<String> attributeType;
 
-    public ExcelDBTableDataManager(String url, String username, String password, String tableName, List<String> attributeKey, List<String> attributeType) {
+    public ExcelDBTableDataManager(DataSource dataSource ,String url, String username, String password, String tableName, List<String> attributeKey, List<String> attributeType) {
+        this.template = new JdbcTemplate(dataSource);
         this.url = url;
         this.username = username;
         this.password = password;
@@ -41,7 +39,7 @@ public class ExcelDBTableDataManager {
     }
 
     @PostConstruct
-    public void executeTableOperation() throws SQLException {
+    public void executeTableOperation() {
         String checkValue = mode.toUpperCase();
         if (!modeCheck(checkValue)){
             throw new ModeNotFountException();
@@ -49,62 +47,51 @@ public class ExcelDBTableDataManager {
 
         if (checkValue.equals(MODE_CONSTANT[2])) return;
 
-        ExcelToTableOperation = selectOperationTable.get(checkValue);
-        Connection connection = null;
-        Statement statement = null;
-        try{
-            //get
-            connection = getConnection();
-            statement = connection.createStatement();
-            ExcelToTableOperation.execute(statement,tableName,attributeKey,attributeType);
+        droptable();
+        String createTableSql = setInitCreateQuery(attributeKey,attributeType,tableName);
+        log.info("table 생성={}",createTableSql);
+        template.update(createTableSql);
 
-        } catch (SQLException e){
-            e.printStackTrace();
-            throw e;
-        } catch (NoSuchElementException e){
-            log.error("application에서 DataType을 확인해주세요");
-        } finally {
-            //시작과 역순으로 close 해주기
-            close(connection,statement,null);
-        }
     }
 
-    private void close(Connection con, Statement stmt, ResultSet resultSet){
-
-        if (resultSet != null){
-            try {
-                resultSet.close();
-            } catch (SQLException e) {
-                log.info("error",e);
-            }
-        }
-
-        if (stmt != null){
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                log.info("error",e);
-            }
-        }
-
-        if (con != null){
-            try {
-                con.close(); //Exception
-            } catch (SQLException e) {
-                log.info("error",e);
-            }
-        }
+    private void droptable() {
+        String sql = "DROP TABLE IF EXISTS " + tableName;
+        log.info("{} table 삭제",tableName);
+        template.update(sql);
     }
 
-    public Connection getConnection() {
-        try{
-            Connection connection = DriverManager.getConnection(url, username, password);
-            log.info("get connection={}, class={}",connection,connection.getClass());
-            return connection;
-        } catch (SQLException e){
-            throw new IllegalStateException(e);
-        }
+    private static String setInitCreateQuery(List<String> attributeKey, List<String> attributeType, String tableName) {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("CREATE TABLE "+tableName+" (");
+
+        return String.valueOf(setInitColumnTable(attributeKey,attributeType,sb));
     }
+
+    private static StringBuffer setInitColumnTable(List<String> attributeKey, List<String> attributeType, StringBuffer sb){
+
+        for (int i = 0; i < attributeKey.size(); i++){
+            sb.append(attributeKey.get(i)+" "+setInitDatatypeTable(attributeType,i)+",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.append(");");
+
+        return sb;
+    }
+
+    private static String setInitDatatypeTable(List<String> attributeType, int index)
+            throws NoSuchElementException {
+        switch (attributeType.get(index).toLowerCase()){
+            case "string":
+                return "varchar(50)";
+            case "int":
+                return "int";
+            case "long":
+                return "bigint";
+        }
+        throw new NoSuchElementException();
+    }
+
 
     private static boolean modeCheck(String checkValue){
 
