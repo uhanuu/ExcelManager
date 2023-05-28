@@ -1,6 +1,5 @@
 package io.excelmanager.v1.config;
 
-import io.excelmanager.v1.properties.ExcelDataSourceProperties;
 import io.excelmanager.v1.properties.ExcelFileReaderProperties;
 import io.excelmanager.v1.properties.DataSourceConverter;
 import io.excelmanager.v1.properties.table.ExcelDBTableDataManager;
@@ -13,11 +12,10 @@ import javax.sql.DataSource;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableConfigurationProperties({ExcelFileReaderProperties.class, ExcelDataSourceProperties.class})
+@EnableConfigurationProperties(ExcelFileReaderProperties.class)
 public class DatabaseConnectionConfig {
 
     private final ExcelFileReaderProperties excelFileReaderProperties;
-    private final ExcelDataSourceProperties excelDataSourceProperties;
     private final DataSource dataSource;
 
     @Bean
@@ -32,9 +30,6 @@ public class DatabaseConnectionConfig {
     public ExcelDBTableDataManager ExcelDBTableDataManager(){
         return new ExcelDBTableDataManager(
                 dataSource,
-                excelDataSourceProperties.getUrl(),
-                excelDataSourceProperties.getUsername(),
-                excelDataSourceProperties.getPassword(),
                 excelFileReaderProperties.getDatabaseTableName(),
                 excelFileReaderProperties.getAttributeKey(),
                 excelFileReaderProperties.getAttributeType()

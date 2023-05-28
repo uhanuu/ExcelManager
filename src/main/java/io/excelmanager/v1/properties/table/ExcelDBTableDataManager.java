@@ -21,18 +21,12 @@ public class ExcelDBTableDataManager {
 
     @Value("${excel.mode:default}")
     private String mode;
-    private String url;
-    private String username;
-    private String password;
     private String tableName;
     private List<String> attributeKey;
     private List<String> attributeType;
 
-    public ExcelDBTableDataManager(DataSource dataSource ,String url, String username, String password, String tableName, List<String> attributeKey, List<String> attributeType) {
+    public ExcelDBTableDataManager(DataSource dataSource , String tableName, List<String> attributeKey, List<String> attributeType) {
         this.template = new JdbcTemplate(dataSource);
-        this.url = url;
-        this.username = username;
-        this.password = password;
         this.tableName = tableName;
         this.attributeKey = attributeKey;
         this.attributeType = attributeType;
@@ -83,7 +77,7 @@ public class ExcelDBTableDataManager {
             throws NoSuchElementException {
         switch (attributeType.get(index).toLowerCase()){
             case "string":
-                return "varchar(50)";
+                return "varchar(80)";
             case "int":
                 return "int";
             case "long":

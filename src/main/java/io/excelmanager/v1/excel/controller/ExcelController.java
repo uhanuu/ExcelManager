@@ -1,7 +1,7 @@
 package io.excelmanager.v1.excel.controller;
 
-import io.excelmanager.v2.dto.InsertDatabaseDto;
 import io.excelmanager.v1.excel.service.ExcelConnection;
+import io.excelmanager.v2.dto.InsertDatabaseDto;
 import io.excelmanager.v1.excel.service.ExcelFileReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,14 +25,10 @@ public class ExcelController {
     private final ExcelConnection excelConnection;
 
     @GetMapping("/insert-db")
-    public List<Map<String, Object>> ExcelDataReader() {
+    public List<Map<String, Object>> ExcelDataReader() throws IOException {
         List<Map<String, Object>> excelData = excelFileReader.readExcel();
 
-        try {
-            excelConnection.excute(excelData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        excelConnection.execute(excelData);
         return excelData;
     }
 

@@ -1,6 +1,5 @@
 package io.excelmanager.v1.excel.service;
 
-import io.excelmanager.v1.properties.DataSourceConverter;
 import io.excelmanager.v1.properties.ExcelFileReaderProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import static io.excelmanager.v1.properties.DataSourceConverter.*;
 @RequiredArgsConstructor
 public class ExcelFileReader {
 
-    private final DataSourceConverter dataSourceConverter;
     private final ExcelFileReaderProperties excelFileReaderProperties;
 
 
@@ -104,10 +102,6 @@ public class ExcelFileReader {
             Cell cell = row.getCell(cellFilter[i]);
             i++;
             if (cell != null) {
-                String strValue = cell.getStringCellValue();
-                if (strValue.contains("대학원") || strValue.contains("대학원대학")){
-                    break;
-                }
                 switch (cell.getCellType()) {
                     case BLANK:
                         map.put(columns[j], "");
