@@ -1,4 +1,4 @@
-package io.excelmanager.v1.dto;
+package io.excelmanager.v2.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

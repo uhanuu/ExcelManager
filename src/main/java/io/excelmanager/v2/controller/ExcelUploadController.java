@@ -1,8 +1,8 @@
-package io.excelmanager.v1.excel.controller;
+package io.excelmanager.v2.controller;
 
 
-import io.excelmanager.v1.excel.service.ExcelUploadService;
-import io.excelmanager.v1.file.UploadFile;
+import io.excelmanager.v2.service.ExcelUploadService;
+import io.excelmanager.v2.file.UploadFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
