@@ -39,7 +39,7 @@ public class ExcelDBTableDataManager {
             throw new ModeNotFountException();
         }
 
-        if (checkValue.equals(MODE_CONSTANT[2])) return;
+        if (!checkValue.equals(MODE_CONSTANT[0])) return;
 
         droptable();
         String createTableSql = setInitCreateQuery(attributeKey,attributeType,tableName);
@@ -58,6 +58,7 @@ public class ExcelDBTableDataManager {
         StringBuffer sb = new StringBuffer();
 
         sb.append("CREATE TABLE "+tableName+" (");
+        sb.append("id bigint PRIMARY KEY AUTO_INCREMENT,");
 
         return String.valueOf(setInitColumnTable(attributeKey,attributeType,sb));
     }
