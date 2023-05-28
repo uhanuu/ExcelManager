@@ -1,11 +1,9 @@
 package io.excelmanager.v1.properties.table;
 
-import io.excelmanager.v2.exception.ModeNotFountException;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -36,7 +34,7 @@ public class ExcelDBTableDataManager {
     public void executeTableOperation() {
         String checkValue = mode.toUpperCase();
         if (!modeCheck(checkValue)){
-            throw new ModeNotFountException();
+            log.error("application.properties 옵션을 확인해주세요");
         }
 
         if (!checkValue.equals(MODE_CONSTANT[0])) return;
