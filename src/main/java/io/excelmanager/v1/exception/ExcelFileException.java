@@ -1,4 +1,4 @@
-package io.excelmanager.v2.exception;
+package io.excelmanager.v1.exception;
 
 public class ExcelFileException extends RuntimeException {
 
