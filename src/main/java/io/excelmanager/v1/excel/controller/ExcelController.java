@@ -19,11 +19,11 @@ public class ExcelController {
     private final ExcelConnection excelConnection;
 
     @GetMapping("/insert-db")
-    public List<Map<String, Object>> ExcelDataReader() {
+
+    public List<Map<String, Object>> ExcelDataReader(){
         List<Map<String, Object>> excelData = excelFileReader.readExcel();
 
         excelConnection.execute(excelData);
         return excelData;
     }
-
 }
