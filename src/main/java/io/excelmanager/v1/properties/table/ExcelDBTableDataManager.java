@@ -1,11 +1,11 @@
 package io.excelmanager.v1.properties.table;
 
-import io.excelmanager.v2.exception.ModeNotFountException;
+import io.excelmanager.v1.constant.ModeConstant;
+import io.excelmanager.v1.exception.ModeNotFountException;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -15,11 +15,7 @@ import java.util.NoSuchElementException;
 public class ExcelDBTableDataManager {
     private final JdbcTemplate template;
 
-    private static String[] MODE_CONSTANT = {
-            "CREATE", "UPDATE", "DEFAULT"
-    };
-
-    @Value("${excel.mode:default}")
+    @Value("${excel.mode:none}")
     private String mode;
     private String tableName;
     private List<String> attributeKey;
@@ -35,20 +31,24 @@ public class ExcelDBTableDataManager {
     @PostConstruct
     public void executeTableOperation() {
         String checkValue = mode.toUpperCase();
-        if (!modeCheck(checkValue)){
-            throw new ModeNotFountException();
-        }
 
-        if (!checkValue.equals(MODE_CONSTANT[0])) return;
+        if (checkValue.equals(ModeConstant.CREATE)){
+            createTable();
+        } else if (checkValue.equals(ModeConstant.DROP)) {
+            dropTable();
+        } else if (checkValue.equals(ModeConstant.NONE)) {
 
-        droptable();
+        } else throw new ModeNotFountException();
+    }
+
+    private void createTable() {
+        dropTable();
         String createTableSql = setInitCreateQuery(attributeKey,attributeType,tableName);
         log.info("table 생성={}",createTableSql);
         template.update(createTableSql);
-
     }
 
-    private void droptable() {
+    private void dropTable() {
         String sql = "DROP TABLE IF EXISTS " + tableName;
         log.info("{} table 삭제",tableName);
         template.update(sql);
@@ -74,25 +74,17 @@ public class ExcelDBTableDataManager {
         return sb;
     }
 
+    //최대한 모든 DBMS 사용할 수 있게 처리해주기
     private static String setInitDatatypeTable(List<String> attributeType, int index)
             throws NoSuchElementException {
         switch (attributeType.get(index).toLowerCase()){
             case "string":
-                return "varchar(80)";
+                return "varchar(255)";
             case "int":
                 return "int";
             case "long":
                 return "bigint";
         }
         throw new NoSuchElementException();
-    }
-
-
-    private static boolean modeCheck(String checkValue){
-
-        for (String constant  : MODE_CONSTANT) {
-            if (constant.equals(checkValue)) return true;
-        }
-        return false;
     }
 }
