@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -13,17 +12,17 @@ import java.util.List;
 @Validated
 public class ExcelFileReaderProperties {
 
-    @NotEmpty
+    @NotEmpty(message = "excel.attribute-key를 입력해주세요")
     private List<String> attributeKey;
-    @NotEmpty
+    @NotEmpty(message = "excel.attribute-value를 입력해주세요")
     private List<Character> attributeValue;
-    @NotEmpty
+    @NotEmpty(message = "excel.attribute-type를 입력해주세요")
     private List<String> attributeType;
-    @NotEmpty
+    @NotEmpty(message = "excel.path를 입력해주세요")
     private String path;
-    @NotEmpty
+    @NotEmpty(message = "excel.file-name를 입력해주세요")
     private String fileName;
-    @NotEmpty
+    @NotEmpty(message = "excel.database-table-name를 입력해주세요")
     private String databaseTableName;
 
     public ExcelFileReaderProperties(List<String> attributeKey, List<Character> attributeValue,
