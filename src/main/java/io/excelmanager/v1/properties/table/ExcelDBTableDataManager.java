@@ -2,7 +2,6 @@ package io.excelmanager.v1.properties.table;
 
 
 import io.excelmanager.v1.constant.ModeConstant;
-import io.excelmanager.v1.exception.ModeNotFountException;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,7 @@ public class ExcelDBTableDataManager {
             dropTable();
         } else if (checkValue.equals(ModeConstant.NONE)) {
 
-        } else throw new ModeNotFountException();
+        } else throw new NoSuchElementException();
     }
 
     private void createTable() {
