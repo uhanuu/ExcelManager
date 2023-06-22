@@ -1,53 +1,53 @@
-공공데이터포털에서 사용하면 유용할 Excel파일들이 있어, 데이터를 추출해서 JSON으로 넘겨주거나 DB에 저장하면 유용할거 같아서 개발하기 시작했다. 
+공공데이터포털에서 사용하면 유용할 Excel파일들이 있어, 데이터를 추출해서 DB에 저장하면 유용할거 같아서 개발하기 시작했다.
 
 <img width="1438" alt="image" src="https://user-images.githubusercontent.com/110734817/235599797-6cfd6dfc-68b5-46f6-99e2-b87dc7c7967f.png">
 
 > Reference: https://www.data.go.kr/index.do
 
 ## Spring @ConfigurationProperties을 이용해서 apllication.properties 설정 정보 가져오기
-<img width="808" alt="image" src="https://user-images.githubusercontent.com/110734817/235601044-3278e134-4267-4f73-863e-3f3d42c445d9.png">
+![image](https://github.com/uhanuu/ExcelManager/assets/110734817/e0a11cc2-1cae-49f7-b81d-ac95fe285f7f)
+
+
+
+| 값 | 의미 |
+|:---:|:---:|
+| `url` | DB connection을 위한 옵션 |
+| `username` | DB connection을 위한 옵션 |
+| `password` | DB connection을 위한 옵션 |
+| `driverClassName` | DB connection을 위한 옵션 |
 
 | 값 | 의미 | 기본값 |
 |:---:|:---:|:---:|
-| `url` | DB connection을 위한 옵션 | `NOT NULL` |
-| `username` | DB connection을 위한 옵션 | `NOT NULL` |
-| `password` | DB connection을 위한 옵션 | `NOT NULL` |
-| `driverClassName` | DB connection을 위한 옵션 | `NOT NULL` |
-
-| 값 | 의미 | 기본값 |
-|:---:|:---:|:---:|
-| `attributeKey` | DB테이블의 column 이름을 순서대로 작성 | `NOT NULL` |
-| `attributeValue` | Excel파일에서 읽어올 column 이름을 테이블 명과 일치하게 작성 | `NOT NULL` |
-| `attributeType` | DB colums에 데이터 타입으로 JPA에 명시할 때 사용하는 데이터 타입으로 작성(대소문자 구별X) | `NOT NULL` |
-| `path` | Excel파일 경로 | `NOT NULL` |
-| `fileName` | Excel파일 이름 | `NOT NULL` |
-| `databaseTableName` | DB connection을 위한 옵션 | `NOT NULL` |
+| `attributeKey` | DB테이블의 column 이름을 순서대로 작성 | `NULL` |
+| `attributeValue` | Excel파일에서 읽어올 column 이름(Excel은 A~Z넘을 수 있다.) 테이블 명과 일치하게 작성 | `NULL` |
+| `attributeType` | DB colums에 데이터 타입으로 JPA에 명시할 때 사용하는 데이터 타입으로 작성(대소문자 구별X) | `NULL` |
+| `path` | Excel파일 경로 | `NULL` |
+| `fileName` | Excel파일 이름 | `NULL` |
+| `databaseTableName` | DB connection을 위한 옵션 | `NULL` |
+| `mode` | 테이블이 없을 경우 생성해주거나 반대로 삭제하는 옵션(대소문자 구별X) | `NONE` |
 
 실행 결과
 <img width="1127" alt="image" src="https://user-images.githubusercontent.com/110734817/235604724-c5d91a97-17e2-461c-b9c0-a2288ada85a4.png">
-<img width="792" alt="image" src="https://user-images.githubusercontent.com/110734817/235604929-e81687fa-6ed9-4d4f-bbd6-a3fb190f5e9c.png">
+<img width="694" alt="image" src="https://github.com/uhanuu/ExcelManager/assets/110734817/3fabf574-7690-492e-8b3d-f38570730c9e">
 + 위에 Excel파일 사진과, application.properties 사진을 참고해서 보면 이해가 될 것이다.
+추가로 select 가능하게 추가 했다.
+
+#### 복수개 field를 받고 싶은 경우 RequestParam으로 List로 받게된다.
+<img width="848" alt="image" src="https://github.com/uhanuu/ExcelManager/assets/110734817/db494746-9ff4-43f4-a244-a2dc1990133d">
+
+#### 사용하더라도 pk랑 사용하지 단일 field 검색은 사용하지 않을거 같아서 따로 뺐다.
+<img width="720" alt="image" src="https://github.com/uhanuu/ExcelManager/assets/110734817/3cf301b4-82e4-4e31-b84e-549c2f8cd9ac">
+
+
 
 ## 주의점
 ![image](https://user-images.githubusercontent.com/110734817/235668352-d7001f39-96c2-4746-8005-76f02f1f1f74.png)
 
-application.properties 안에 database-table-name 정보를 확인 후 해당 테이블이 있으면 DROP TABLE 이후 CREATE TABLE을 하기로 지금은 설정되어 있다.
+application.properties에서 mode를 create로 설정시 database-table-name 정보를 확인 후 해당 테이블이 있으면 DROP TABLE 이후 CREATE TABLE 쿼리가 실행된다.
 
 ## yml에서 한글 데이터가 깨진다면 밑에 사진을 참고하자
 <img src="https://user-images.githubusercontent.com/110734817/235599126-f77664ea-9df0-4dfc-b4fc-09aea5a7aa54.png" width="700" height="500"/>
 우측하단에 Transparent native-to-ascii  conversion 클릭해주자
 
 ## 개선 요구사항
-1. 예외처리
-2. 내 코드는 "대학원", "대학원대학" 조건은 제외되도록 코드를 작성했는데 좀더 다른 조건을 걸 수 있도록 유연하게 설계
-3. (2)번 조건으로 인해 데이터가 비어있는 부분이 있다. -> DB에 insert 할 때는 체크했지만 JSON 처리할 때 empty check하기
-4-1. POST요청으로 -> JSON 내려줄 수 있게 처리해주기
-4-2. db에 내마음대로 파싱한 데이터를 다운로드 받을 수 있게 처리해주기(url 경로 설정할 때 mac,window 운영체제마다 다르니 생각해보기) 
-4-3. 파일이름으로 다운로드 내려줄 때 추가적으로 UTF-8 적용해주기
-4-4. 파일이름이 사용자마다 겹칠 수 있으니까 UUID이용해서 파싱해주자 user_id 값을 이용해서 파싱하기에는 domain에 pathValiable 이용하면 노출될 수 있으니까 좋은거 같지는 않다. 물론... 로그인 기능을 만들지는 아직 모르겠지만 >_-
-5. Java bean validation 으로 제약조건 설정해주기 -> NOT NULL 사용안할 때 있을 수 있으니까 필수값 수정하기
-(Javax validation에서 조금 기능 더있는 하이버네이트 validation 사용하기 (duration으로 연결시간 설정할 때)
-6. spring에 jpa.hibernate.ddl-auto 옵션 처럼 원하는 설정 정보에 따라서 table drop, update 요구사항 처리하기
-7. Local 환경에서 사용하니까 배치프레임워크를 이용해서 특정 시간에(쿼츠 스케줄러 같은거 사용해서) 삭제 처리해주기
-8. 처음에 만들었던 기본로직들 properties에 적용안되어 있어도 다른 기능을 사용할 수 있으니까 default를 줘서 on, off 처리를 하던지 코드 수정하기
-
+MySQL을 기준으로 만들었는데 쿼리가 별로 없긴한데 다양한 DBMS에서 사용가능하게 추가해주기
