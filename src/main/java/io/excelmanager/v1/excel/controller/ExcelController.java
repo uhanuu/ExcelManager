@@ -30,9 +30,9 @@ public class ExcelController {
     public List ExcelSelectField(@RequestParam String fieldName){
         return excelRepository.findField(fieldName);
     }
-
     @GetMapping("/find-list")
     public List ExcelSelectFields (@RequestParam List<String> fieldNames){
         return excelRepository.findFieldByList(fieldNames);
     }
+
 }
