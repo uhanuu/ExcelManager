@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ExcelRepository {
     public List findField(String fieldName);
-    public List findFieldList(List<String> fieldNames);
+    public List findFieldByList(List<String> fieldNames);
 }

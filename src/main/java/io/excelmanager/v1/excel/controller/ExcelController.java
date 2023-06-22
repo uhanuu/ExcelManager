@@ -4,7 +4,6 @@ import io.excelmanager.v1.excel.repository.ExcelRepository;
 import io.excelmanager.v1.excel.service.ExcelConnection;
 import io.excelmanager.v1.excel.service.ExcelFileReader;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/admin")
 public class ExcelController {
 
@@ -35,6 +33,6 @@ public class ExcelController {
 
     @GetMapping("/find-list")
     public List ExcelSelectFields (@RequestParam List<String> fieldNames){
-        return excelRepository.findFieldList(fieldNames);
+        return excelRepository.findFieldByList(fieldNames);
     }
 }

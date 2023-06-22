@@ -49,7 +49,6 @@ public class ExcelFileReader {
                 getSheet(workbook, sheets, list);
             }
         } catch (IOException e) {
-            //예외처리 해주기
             e.printStackTrace();
         } finally {
             if (fis != null) {

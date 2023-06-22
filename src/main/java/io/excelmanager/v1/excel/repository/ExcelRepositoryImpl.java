@@ -12,7 +12,6 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-@Slf4j
 public class ExcelRepositoryImpl implements ExcelRepository{
 
     private final JdbcTemplate jdbcTemplate;
@@ -21,27 +20,21 @@ public class ExcelRepositoryImpl implements ExcelRepository{
 
     public List<?> findField(String fieldName){
         String tableName = excelFileReaderProperties.getDatabaseTableName();
-        //sql injection 조심해야 됨
         String sql = "select "+tableName+"."+fieldName+" from "+tableName;
         return jdbcTemplate.queryForList(sql);
     }
 
-    public List<?> findFieldList(List<String> selectFields){
-        log.info("selectFields={}",selectFields);
+    public List<?> findFieldByList(List<String> selectFields){
 
         String tableName = excelFileReaderProperties.getDatabaseTableName();
         StringBuffer sb = new StringBuffer();
         sb.append("select ");
-        //sql injection 조심해야 됨
         for (String selectField : selectFields) {
             sb.append(tableName+"."+selectField+", ");
         }
         sb.deleteCharAt(sb.lastIndexOf(", "));
         sb.append(" from "+tableName);
-        log.info("sql={}",sb);
         return jdbcTemplate.queryForList(String.valueOf(sb));
     }
-
-
 
 }

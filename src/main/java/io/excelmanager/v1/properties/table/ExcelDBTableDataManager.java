@@ -39,7 +39,7 @@ public class ExcelDBTableDataManager {
             dropTable();
         } else if (checkValue.equals(ModeConstant.NONE)) {
 
-        } else throw new NoSuchElementException();
+        } else throw new NoSuchElementException("application.properties에서 사용 가능한 모드는 NONE,CREATE,DROP만 가능합니다.");
     }
 
     private void createTable() {

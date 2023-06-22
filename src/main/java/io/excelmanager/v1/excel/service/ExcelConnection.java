@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,6 @@ public class ExcelConnection {
 
             checkExtract(list, query, mapKeyToValue, attributeType, key, i);
         }
-
         log.info("insert를 완료했습니다.");
     }
 
@@ -55,8 +53,6 @@ public class ExcelConnection {
                     break;
             }
         }
-        log.info("params={}", Arrays.toString(params));
-        // update query 실행
         jdbcTemplate.update(query, params);
     }
 
